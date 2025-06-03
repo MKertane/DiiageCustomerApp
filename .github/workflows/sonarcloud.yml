@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Build and analyze on SonarCloud
-    runs-on: windows-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout source code
@@ -25,6 +25,7 @@ jobs:
         run: |
           dotnet tool install dotnet-sonarscanner --tool-path ./.dotnet-tools
           echo "$(pwd)/.dotnet-tools" >> $GITHUB_PATH
+        shell: bash
 
       - name: Restore dependencies
         run: dotnet restore
@@ -32,6 +33,7 @@ jobs:
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: bash
         run: |
           dotnet sonarscanner begin \
             /k:"MK-Organisation_DiiageCustomerApp" \
@@ -45,4 +47,5 @@ jobs:
       - name: End SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: bash
         run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
