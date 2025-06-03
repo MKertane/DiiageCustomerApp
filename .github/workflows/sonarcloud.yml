@@ -19,10 +19,12 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'  # Ou la version que ton projet utilise
+          dotnet-version: '8.0.x'
 
-      - name: Install SonarScanner for .NET
-        run: dotnet tool install --global dotnet-sonarscanner
+      - name: Install SonarScanner for .NET (locally)
+        run: |
+          dotnet tool install dotnet-sonarscanner --tool-path ./.dotnet-tools
+          echo "$(pwd)/.dotnet-tools" >> $GITHUB_PATH
 
       - name: Restore dependencies
         run: dotnet restore
