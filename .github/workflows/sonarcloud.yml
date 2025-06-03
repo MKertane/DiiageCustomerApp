@@ -19,12 +19,10 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '6.0.x'
 
-      - name: Install SonarScanner for .NET (locally)
-        run: |
-          dotnet tool install dotnet-sonarscanner --tool-path ./.dotnet-tools
-          echo "$(pwd)/.dotnet-tools" >> $GITHUB_PATH
+      - name: Install SonarScanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner
 
       - name: Restore dependencies
         run: dotnet restore
@@ -40,4 +38,3 @@ jobs:
       - name: End SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
