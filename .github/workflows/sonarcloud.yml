@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Build and analyze on SonarCloud
-    runs-on: windows-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout source code
