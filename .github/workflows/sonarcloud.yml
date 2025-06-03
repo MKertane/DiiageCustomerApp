@@ -22,10 +22,10 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Install SonarScanner for .NET (locally)
+        shell: bash
         run: |
           dotnet tool install dotnet-sonarscanner --tool-path ./.dotnet-tools
           echo "$(pwd)/.dotnet-tools" >> $GITHUB_PATH
-        shell: bash
 
       - name: Restore dependencies
         run: dotnet restore
@@ -33,6 +33,7 @@ jobs:
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          PATH: ${{ github.workspace }}/.dotnet-tools:${{ env.PATH }}
         shell: bash
         run: |
           dotnet sonarscanner begin \
@@ -47,5 +48,6 @@ jobs:
       - name: End SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          PATH: ${{ github.workspace }}/.dotnet-tools:${{ env.PATH }}
         shell: bash
         run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
